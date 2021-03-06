@@ -1,0 +1,6 @@
+dataset 1 - HTRU_2.csv:
+
+selected number of clusters: 4
+max score: 0.4455153090262426
+
+after doing statistical tests, the best algorithm is K-Means - do it again

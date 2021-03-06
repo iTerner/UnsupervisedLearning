@@ -1,0 +1,27 @@
+dataset 1 col number factor 9
+mutal information KMeans: ,0.1537150930033099
+mutal information GMM: ,0.15477859198168403
+mutal information Fuzzy: ,0.14130490877163848
+mutal information Hierarchical: ,0.037512053832187135
+mutal information Spectral: ,0.16321084410400574
+
+dataset 2 col number Class 3 clusters
+mutal information KMeans: ,0.43134183208153454
+mutal information GMM: ,0.45615925595574297
+mutal information Fuzzy: ,0.43171279358299675
+mutal information Hierarchical: ,0.4024606765461015
+mutal information Spectral: ,0.424541440777246
+
+dataset 2 col number Class 4 clusters
+mutal information KMeans: ,0.3899041421597686
+mutal information GMM: ,0.3806925299246648
+mutal information Fuzzy: ,0.3873419339028568
+mutal information Hierarchical: ,0.373611262237106
+mutal information Spectral: ,0.27833148224214327
+
+dataset 2 col number Class 5 clusters
+mutal information KMeans: ,0.31888261583326494
+mutal information GMM: ,0.3448863674324597
+mutal information Fuzzy: ,0.32147593381357614
+mutal information Hierarchical: ,0.333444062600247
+mutal information Spectral: ,0.2615716566749424
