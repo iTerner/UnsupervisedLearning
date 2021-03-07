@@ -32,13 +32,6 @@ Web:		http://www.scienceguyrob.com or http://www.cs.manchester.ac.uk
 	detections are caused by radio frequency interference (RFI) and noise, making legitimate
 	signals hard to find.
 	
-	Machine learning tools are now being used to automatically label pulsar candidates to
-	facilitate rapid analysis. Classification systems in particular are being widely adopted,
-	(see [4,5,6,7,8,9]) which treat the candidate data sets  as binary classification problems.
-	Here the legitimate pulsar examples are a minority positive class, and spurious examples
-	the majority negative class. At present multi-class labels are unavailable, given the
-	costs associated with data annotation.
-	
 	The data set shared here contains 16,259 spurious examples caused by RFI/noise, and 1,639
 	real pulsar examples. These examples have all been checked by human annotators. Each
 	candidate is described by 8 continuous variables. The first four are simple statistics
