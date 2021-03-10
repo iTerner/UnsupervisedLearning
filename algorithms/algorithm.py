@@ -56,11 +56,15 @@ class Algorithm:
 
             self.data = dataset
 
-        self.data = tmp
-        print(self.data)
+        #self.data = tmp
+        #indexs = anomalous_points.index
+        # print(indexs)
+
         print("anomalous points \n", anomalous_points)
 
     def density_based_outlier_detection(self):
+        tmp = pd.DataFrame()
+
         clf = LocalOutlierFactor(n_neighbors=20, contamination=0.1)
         y_pred = clf.fit_predict(self.data)
         print("y_pred", y_pred)
@@ -68,6 +72,13 @@ class Algorithm:
         print("X_scores", X_scores)
 
         count = X_scores < sum(X_scores) / len(X_scores)
+
+        temp_anomalous_points = self.data.iloc[count]
+        dataset = pd.concat([self.data, temp_anomalous_points]
+                            ).drop_duplicates(keep=False)
+
+        self.data = dataset
+
         points = 0
         for i in range(len(count)):
             if count[i]:

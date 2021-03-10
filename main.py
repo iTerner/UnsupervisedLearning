@@ -51,10 +51,7 @@ create plot of the data after clustering
 
 
 def plot_data(data, datanum, centers):
-    l = []
-    for i in range(5):
-        l.append(sum(get_list(i, datanum)) / len(get_list(i, datanum)))
-    p = ClusterPlots(centers, l, data, datanum)
+    p = ClusterPlots(centers, data, datanum)
     p.plot()
 
 
@@ -91,28 +88,30 @@ def external_quality_of_clustering(data, datanum, colnum, centers):
     s.mutal_information(colnum, centers)
 
 
-def anomaly_detection(data, datanum):
-    a = Kmeans(3, data, datanum, False)
+def anomaly_detection(data, datanum, n):
+    a = Kmeans(n, data, datanum, False)
     a.Cluster_based_outlier_detection()
+    data = a.data
+    plot_data(data, datanum, n)
 
 
-def density_estimate(data, datanum):
-    a = Kmeans(3, data, datanum, False)
+def density_estimate(data, datanum, n):
+    a = Kmeans(n, data, datanum, False)
     a.density_based_outlier_detection()
 
 
 def main():
-    data = LoadData().get_data1()
+    data = LoadData().get_data()
     datanum = 2
 
-    #density_estimate(data, datanum)
-    anomaly_detection(data, datanum)
+    #density_estimate(data, datanum, 3)
+    #anomaly_detection(data, datanum, 3)
 
-    # external_quality_of_clustering(data, datanum, "Class", 3)
+    #external_quality_of_clustering(data, datanum, "Class", 2)
     # statistical_tests(datanum)
     # get_scores(data, datanum)
     #plot_data(data, datanum, 3)
-    # best_number_of_clusters_test(data, datanum)
+    #best_number_of_clusters_test(data, datanum)
 
 
 if __name__ == "__main__":

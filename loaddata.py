@@ -50,6 +50,8 @@ class LoadData():
         return data
 
 
+# print(LoadData().get_data())
+
 """
 print(LoadData().get_data1())
 print(data)

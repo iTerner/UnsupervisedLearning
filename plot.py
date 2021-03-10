@@ -11,18 +11,17 @@ import matplotlib.pyplot as plt
 
 
 class ClusterPlots:
-    def __init__(self, n, avg_score, data, datanum):
+    def __init__(self, n, data, datanum):
         self.n = n  # The number of centers we used in the algorithm
-        self.avg_score = avg_score  # The average score of each algorithm - list
         self.data = data  # the data
         self.datanum = datanum  # the dataset number
 
     def plot(self):
-        km = Kmeans(self.n, self.data, self.datanum, False)
-        gm = GMM(self.n, self.data, self.datanum, False)
-        fcm = FuzzyCMeans(self.n, self.data, self.datanum, False)
-        spec = Spectral(self.n, self.data, self.datanum, False)
-        heir = Heirarchical(self.n, self.data, self.datanum, False)
+        km = Kmeans(self.n, self.data, self.datanum, True)
+        gm = GMM(self.n, self.data, self.datanum, True)
+        fcm = FuzzyCMeans(self.n, self.data, self.datanum, True)
+        spec = Spectral(self.n, self.data, self.datanum, True)
+        heir = Heirarchical(self.n, self.data, self.datanum, True)
 
         # run the algorithms
         kmeans_data, kmeans_labels, kmeans_score = km.cluster()
@@ -31,9 +30,12 @@ class ClusterPlots:
         spec_data, spec_labels, spec_score = spec.cluster()
         hier_data, hier_labels, hier_score = heir.cluster()
 
+        avg_score = [kmeans_score, gmm_score,
+                     fuzzy_score, spec_score, hier_score]
+
         fig, axs = plt.subplots(3, 2, figsize=(15, 15))
         fig.suptitle("Data Set " + str(self.datanum) +
-                     " with Optimal Clusters Number")
+                     " with Optimal Clusters Number After Removing The Anomalous Points")
         # kmeans
         axs[0, 0].scatter(kmeans_data['x'], kmeans_data['y'], c=kmeans_labels)
         axs[0, 0].set_title("Kmeans with " + str(self.n) +
@@ -63,8 +65,8 @@ class ClusterPlots:
         # scores for clusters
         # the average silhouette score of each algorithm
         algo = ["K-Means", "GMM", "Fuzzy", "Spectral", "Agglomerative"]
-        axs[2, 1].bar(algo, self.avg_score, color=[
-            'red', 'blue', 'purple', 'green', 'black'])
-        axs[2, 1].set_title("Average Silhouette Score", fontsize=10)
-        axs[2, 1].set_ylabel("Average Score")
+        axs[2, 1].bar(algo, avg_score, color=[
+            'red', 'blue', 'purple', 'green', 'yellow'])
+        axs[2, 1].set_title("Silhouette Score", fontsize=10)
+        axs[2, 1].set_ylabel("Score")
         plt.show()
