@@ -9,7 +9,7 @@ class LoadData():
     def __init__(self):
         pass
 
-    def get_data(self):
+    def get_data2(self):
         data = pd.read_csv("HTRU_2.csv")
         x, y = np.array(data).shape
         # adding a 'head' row to the data

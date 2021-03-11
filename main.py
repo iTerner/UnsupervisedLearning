@@ -19,7 +19,7 @@ def get_list(n, datanumber):
         4 returns the scores for Heirarchical
     """
     l = []
-    filename = "scores_for_dataset" + str(datanumber) + ".csv"
+    filename = "scores_for_dataset" + str(datanumber) + "_outlier.csv"
     with open(filename, 'r') as f:
         reader = csv.reader(f)
         # count = 1
@@ -60,9 +60,9 @@ The function calculate the score for each algorithm and each dataset
 """
 
 
-def get_scores(data, datanum):
+def get_scores(data, datanum, n):
     test = ScoreInformation(data, datanum)
-    test.get_all_scores(30, 3)
+    test.get_all_scores(30, n)
 
 
 """
@@ -92,7 +92,9 @@ def anomaly_detection(data, datanum, n):
     a = Kmeans(n, data, datanum, False)
     a.Cluster_based_outlier_detection()
     data = a.data
-    plot_data(data, datanum, n)
+    print("data", data)
+    get_scores(data, datanum, n)
+    #plot_data(data, datanum, n)
 
 
 def density_estimate(data, datanum, n):
@@ -101,15 +103,14 @@ def density_estimate(data, datanum, n):
 
 
 def main():
-    data = LoadData().get_data()
+    data = LoadData().get_data2()
     datanum = 2
 
     #density_estimate(data, datanum, 3)
-    #anomaly_detection(data, datanum, 3)
-
+    #anomaly_detection(data, datanum, 4)
     #external_quality_of_clustering(data, datanum, "Class", 2)
     # statistical_tests(datanum)
-    # get_scores(data, datanum)
+    # get_scores(data, datanum, 3)
     #plot_data(data, datanum, 3)
     #best_number_of_clusters_test(data, datanum)
 
