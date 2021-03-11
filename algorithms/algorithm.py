@@ -78,6 +78,8 @@ class Algorithm:
                             ).drop_duplicates(keep=False)
 
         self.data = dataset
+        print(self.data)
+        print(self.data.shape)
 
         points = 0
         for i in range(len(count)):

@@ -19,7 +19,7 @@ def get_list(n, datanumber):
         4 returns the scores for Heirarchical
     """
     l = []
-    filename = "scores_for_dataset" + str(datanumber) + "_outlier.csv"
+    filename = "scores_for_dataset" + str(datanumber) + "_density.csv"
     with open(filename, 'r') as f:
         reader = csv.reader(f)
         # count = 1
@@ -100,11 +100,14 @@ def anomaly_detection(data, datanum, n):
 def density_estimate(data, datanum, n):
     a = Kmeans(n, data, datanum, False)
     a.density_based_outlier_detection()
+    data = a.data
+    print("data", data)
+    get_scores(data, datanum, n)
 
 
 def main():
-    data = LoadData().get_data2()
-    datanum = 2
+    data = LoadData().get_data1()
+    datanum = 1
 
     #density_estimate(data, datanum, 3)
     #anomaly_detection(data, datanum, 4)
