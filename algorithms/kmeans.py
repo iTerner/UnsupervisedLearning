@@ -28,7 +28,7 @@ class Kmeans(Algorithm):
         else:
             data = self.data
 
-        x, y = df = PCA_algorithm(self.data)
+        x, y = df = PCA_algorithm(data)
         d = np.array([[xi, yi] for xi, yi in zip(x, y)])
 
         X = np.array(list(zip(x, y))).reshape(len(x), 2)

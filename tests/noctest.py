@@ -7,6 +7,10 @@ class NumberOfClustersTest:
     def __init__(self, algorithm):
         self.algorithm = algorithm  # variable of the algorithm we test
 
+    """
+    plot of the clustering for the given data set
+    """
+
     def test(self):
         data = self.algorithm.data
         tmp = pd.DataFrame(data)
@@ -53,6 +57,10 @@ class NumberOfClustersTest:
             for score in scores:
                 writer.writerow(score)
 
+    """
+    computing the optimal number of clustering and output a plot
+    """
+
     def optimal_number_of_clustering_test(self, k):
         data = self.algorithm.data
         tmp = pd.DataFrame(data)
@@ -89,8 +97,9 @@ class NumberOfClustersTest:
         with open(filename, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(["number fo clusters", "average score"])
-            for score in avg_score:
-                writer.writerow(score)
+            for key in scores.keys():
+                writer.writerow([key])
+                writer.writerow(scores[key])
 
         # ploting
         xpts = []

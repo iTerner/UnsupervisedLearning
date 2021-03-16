@@ -3,6 +3,10 @@ import numpy as np
 import random
 import csv
 
+"""
+Load the data for the final work
+"""
+
 
 class LoadData():
 

@@ -18,6 +18,7 @@ class ScoreInformation:
     """
     n represent number of times.
     centers repersents the number of cluster.
+    computing the score of the algorithm n times
     """
 
     def get_all_scores(self, k, centers):
@@ -54,6 +55,10 @@ class ScoreInformation:
                 writer.writerow([labels[i]])
                 for j in scores[i]:
                     writer.writerow([j])
+
+    """
+    Computing the Atjusted Mutaul Information for the data set with a given tag
+    """
 
     def mutal_information(self, colnumber, centers):
         tmp = pd.DataFrame(self.data)
