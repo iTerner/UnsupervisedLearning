@@ -40,7 +40,7 @@ class FuzzyCMeans(Algorithm):
 
         ncenters = self.n
         cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
-            alldata, ncenters, 2, error=0.005, maxiter=1000, init=None, seed=random.randint(2, 5000))
+            alldata, ncenters, 2, error=0.005, maxiter=1000, init=None, seed=random.randint(2, 1000))
 
         labels = np.argmax(u, axis=0)
         if self.calc_score:

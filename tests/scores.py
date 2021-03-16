@@ -45,7 +45,8 @@ class ScoreInformation:
                 scores[j].append(s)
             print("finished " + str(i + 1))
 
-        filename = "scores_for_dataset" + str(self.datanumber) + "_density.csv"
+        filename = "scores_for_dataset" + \
+            str(self.datanumber) + "_density1.csv"
         labels = ["kmeans", "gmm", "fuzzy", "spectral", "hierarchical"]
         with open(filename, 'a+', newline='') as f:
             writer = csv.writer(f)

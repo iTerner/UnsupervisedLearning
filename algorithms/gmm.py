@@ -38,7 +38,7 @@ class GMM(Algorithm):
 
         # GMM
         gmm = GaussianMixture(
-            n_components=self.n, random_state=random.randint(2, 50))
+            n_components=self.n, random_state=random.randint(2, 1000))
         gmm.fit(d)
         labels = np.array(gmm.predict(d))
 

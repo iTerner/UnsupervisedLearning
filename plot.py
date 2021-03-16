@@ -8,6 +8,11 @@ from algorithms.fuzzycmeans import FuzzyCMeans
 from algorithms.spectral import Spectral
 from algorithms.hierarchical import Heirarchical
 import matplotlib.pyplot as plt
+from function import get_list
+
+"""
+This class create the plots of the cluster data with the anomaly points
+"""
 
 
 class ClusterPlots:
@@ -16,12 +21,12 @@ class ClusterPlots:
         self.data = data  # the data
         self.datanum = datanum  # the dataset number
 
-    def plot(self):
-        km = Kmeans(self.n, self.data, self.datanum, True)
-        gm = GMM(self.n, self.data, self.datanum, True)
-        fcm = FuzzyCMeans(self.n, self.data, self.datanum, True)
-        spec = Spectral(self.n, self.data, self.datanum, True)
-        heir = Heirarchical(self.n, self.data, self.datanum, True)
+    def plot(self, anomaly_index, points):
+        km = Kmeans(self.n, self.data, self.datanum, False)
+        gm = GMM(self.n, self.data, self.datanum, False)
+        fcm = FuzzyCMeans(self.n, self.data, self.datanum, False)
+        spec = Spectral(self.n, self.data, self.datanum, False)
+        heir = Heirarchical(self.n, self.data, self.datanum, False)
 
         # run the algorithms
         kmeans_data, kmeans_labels, kmeans_score = km.cluster()
@@ -30,43 +35,132 @@ class ClusterPlots:
         spec_data, spec_labels, spec_score = spec.cluster()
         hier_data, hier_labels, hier_score = heir.cluster()
 
-        avg_score = [kmeans_score, gmm_score,
-                     fuzzy_score, spec_score, hier_score]
+        # fix the data
+        kmeans_data = pd.DataFrame.from_dict(kmeans_data)
 
-        fig, axs = plt.subplots(3, 2, figsize=(15, 15))
+        t = {"x": [], "y": []}
+        for n1, n2 in hier_data:
+            t["x"].append(n1)
+            t["y"].append(n2)
+
+        hier_data = pd.DataFrame.from_dict(t)
+
+        gmm_data = gmm_data.drop("cluster", axis=1)
+        gmm_data = gmm_data.rename(columns={"dim1": "x", "dim2": "y"})
+        fuzzy_data = fuzzy_data.drop("cluster", axis=1)
+        fuzzy_data = fuzzy_data.rename(columns={0: "x", 1: "y"})
+        spec_data = spec_data.rename(columns={"P1": "x", "P2": "y"})
+
+        # remove the anomaly points from the data
+        new_data = [kmeans_data, gmm_data, fuzzy_data, spec_data, hier_data]
+
+        anomaly_points_data = []
+        p = []
+        for d in new_data:
+            t = d
+            t1 = d
+            anomaly_points_data.append(
+                t.drop(labels=anomaly_index, axis=0, inplace=False))
+            p.append(t.drop(labels=points, axis=0, inplace=False))
+
+        old_data = [kmeans_data.drop(anomaly_index), gmm_data.drop(anomaly_index), fuzzy_data.drop(
+            anomaly_index), spec_data.drop(anomaly_index), hier_data.drop(anomaly_index)]
+        #old_data = [kmeans_data, gmm_data, fuzzy_data, spec_data, hier_data]
+        labels = [kmeans_labels, gmm_labels,
+                  fuzzy_labels, spec_labels, hier_labels]
+
+        new_labels = []
+        for i in labels:
+            new_labels.append(np.delete(i, anomaly_index))
+
+        # get the scores
+        score = []
+        path = ["", "_outlier", "_density"]
+        for i in range(3):
+            score.append([])
+            for j in range(5):
+                l = get_list(j, self.datanum, path[i])
+                score[i].append(sum(l) / len(l))
+
+        fig, axs = plt.subplots(2, 3, figsize=(15, 15))
         fig.suptitle("Data Set " + str(self.datanum) +
-                     " with Optimal Clusters Number After Removing The Anomalous Points")
-        # kmeans
-        axs[0, 0].scatter(kmeans_data['x'], kmeans_data['y'], c=kmeans_labels)
-        axs[0, 0].set_title("Kmeans with " + str(self.n) +
-                            " clusters", fontsize=10)
-        # gmm
-        for k in range(0, 4):
-            tmp = gmm_data[gmm_data["cluster"] == k]
-            axs[0, 1].scatter(tmp["dim1"],
-                              tmp["dim2"], cmap="rainbow")
-        axs[0, 1].set_title("GMM with " + str(self.n) +
-                            " clusters", fontsize=10)
-        # fuzzy
-        for k in range(4):
-            f = fuzzy_data[fuzzy_data['cluster'] == k]
-            axs[1, 0].scatter(f[0], f[1], cmap="rainbow")
-        axs[1, 0].set_title("Fuzzy C Means with " +
-                            str(self.n) + " clusters", fontsize=10)
-        # Agglomerative
-        axs[1, 1].scatter(hier_data[:, 0], hier_data[:, 1], c=hier_labels)
-        axs[1, 1].set_title(
-            "Agglomerative Clustering with " + str(self.n) +
-            " Clusters", fontsize=10)
-        # Spectral
-        axs[2, 0].scatter(spec_data["P1"], spec_data["P2"], c=spec_labels)
-        axs[2, 0].set_title("Spectral Clustering with " + str(self.n) +
-                            " Clusters", fontsize=10)
-        # scores for clusters
-        # the average silhouette score of each algorithm
-        algo = ["K-Means", "GMM", "Fuzzy", "Spectral", "Agglomerative"]
-        axs[2, 1].bar(algo, avg_score, color=[
-            'red', 'blue', 'purple', 'green', 'yellow'])
-        axs[2, 1].set_title("Silhouette Score", fontsize=10)
-        axs[2, 1].set_ylabel("Score")
+                     " with opetimal number of clustering and anomalous points")
+
+        # creating the figure
+        title = ["Kmeans", "GMM", "Fuzzy C Means",
+                 "Spectral Clustering", "Agglomerative Clustering"]
+        count = 0
+        for i in range(2):
+            for j in range(3):
+                if i == 1 and j == 2:
+                    algo = ["K-Means", "GMM", "Fuzzy",
+                            "Spectral", "Agglomerative"]
+                    c = ['b', 'g', 'r']
+                    l = ["avg score", "avg cluster anomaly",
+                         "avg density anomaly"]
+                    for k in range(len(score)):
+                        axs[i, j].bar(algo, score[k], color=c[k], label=l[k])
+                    axs[i, j].set_title("Silhouette Score", fontsize=10)
+                    axs[i, j].set_ylabel("Score")
+                    axs[i, j].legend(loc="lower right")
+                else:
+                    axs[i, j].scatter(p[count]["x"],
+                                      p[count]["y"], c="black")
+                    axs[i, j].scatter(anomaly_points_data[count]["x"],
+                                      anomaly_points_data[count]["y"], c=new_labels[count])
+                    axs[i, j].set_title(
+                        str(title[count]) + " with " + str(self.n) + " clusters", fontsize=10)
+
+                count += 1
+
+        plt.show()
+
+    def score_plot(self):
+        # create a bar figure with the average score of each algorithm with different anomaly methods
+        fig, ax = plt.subplots()
+        width = 0.3
+
+        labels = ["K-Means", "GMM", "Fuzzy", "Spectral", "Agglomerative"]
+        x = np.arange(len(labels))
+
+        # get the scores
+        score = []
+        path = ["", "_outlier", "_density"]
+        for i in range(3):
+            score.append([])
+            for j in range(5):
+                l = get_list(j, self.datanum, path[i])
+                score[i].append(sum(l) / len(l))
+
+        for s in score:
+            print(s)
+
+        rec1 = ax.bar(x - 2 * width / 3,
+                      score[0], 2 * width / 3, label="avg score")
+        rec2 = ax.bar(x, score[1], 2 * width / 3, label="avg clsuter anomaly")
+        rec3 = ax.bar(x + 2 * width / 3, score[2],
+                      2 * width / 3, label="avg density anomaly")
+
+        ax.set_ylabel("Score")
+        ax.set_title("Average Silhouette Score of the Algorithms")
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels)
+
+        def autolabel(rects):
+            # Attach a text label above each bar in *rects*, displaying its height.
+            for rect in rects:
+                height = rect.get_height()
+                val = round(height, 3)
+                ax.annotate('{}'.format(val),
+                            xy=(rect.get_x() + rect.get_width() / 2, height),
+                            xytext=(0, 3),  # 3 points vertical offset
+                            textcoords="offset points",
+                            ha='center', va='bottom')
+
+        autolabel(rec1)
+        autolabel(rec2)
+        autolabel(rec3)
+
+        fig.tight_layout()
+
         plt.show()

@@ -46,7 +46,7 @@ class Spectral(Algorithm):
 
         # Building the clustering model
         spectral_model_rbf = SpectralClustering(
-            n_clusters=self.n, affinity='rbf')
+            n_clusters=self.n, affinity='rbf', random_state=random.randint(2, 1000))
 
         # Training the model and Storing the predicted cluster labels
         labels_rbf = spectral_model_rbf.fit_predict(X_principal)

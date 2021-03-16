@@ -1,14 +1,13 @@
-from scipy.stats import kruskal, entropy, ttest_ind, f_oneway
+from scipy.stats import ttest_ind
 import csv
 
 
 class StatisticalTest:
-    def __init__(self, small, big):
-        self.small = small  # what we think is the worst
-        self.big = big  # what we think is the best
+    def __init__(self, lists):
+        self.vectors = lists  # list of list that represent the vector
 
     def evaluate(self):
-        stat, pval = ttest_ind(self.small, self.big)
+        stat, pval = ttest_ind(self.vectors[0], self.vectors[1])
         if stat < 0:
             realPVal = 1 - pval / 2
         else:
@@ -20,3 +19,6 @@ class StatisticalTest:
             print("small is better")
         print(realPVal)
         return realPVal
+
+    def anova_test(self):
+        pass

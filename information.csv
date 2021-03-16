@@ -16,3 +16,15 @@ mutal information GMM: ,0.2995449372407444
 mutal information Fuzzy: ,0.2780363301661547
 mutal information Hierarchical: ,0.19182322965907095
 mutal information Spectral: ,0.22016384380238566
+dataset 2 col number factor 9
+mutal information KMeans: ,0.1467272186362204
+mutal information GMM: ,0.14879107866804675
+mutal information Fuzzy: ,0.14130490877163848
+mutal information Hierarchical: ,0.037512053832187135
+mutal information Spectral: ,0.1633101001616565
+dataset 1 col number Class
+mutal information KMeans: ,0.43008586978468527
+mutal information GMM: ,0.45570545428405
+mutal information Fuzzy: ,0.43120112484475365
+mutal information Hierarchical: ,0.4027889501288896
+mutal information Spectral: ,0.42463492293217453

@@ -33,8 +33,8 @@ class Kmeans(Algorithm):
 
         X = np.array(list(zip(x, y))).reshape(len(x), 2)
 
-        kmeans = KMeans(
-            n_clusters=self.n, random_state=random.randint(2, 50)).fit(d)
+        kmeans = KMeans(n_clusters=self.n,
+                        random_state=random.randint(2, 1000)).fit(d)
         centroids = kmeans.cluster_centers_
 
         df = {'x': x, 'y': y}
